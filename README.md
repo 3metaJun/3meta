@@ -1,4 +1,4 @@
-![banner2](https://github.com/3metaJun/3meta/static/banner2.jpg)
+![banner2](https://github.com/3metaJun/3meta/blob/main/static/banner2.jpg)
 # 一套轻量级奇门遁甲排盘工具库
 
 ## 介绍
@@ -64,7 +64,7 @@ console.log(chart);
 
 使用本程序返回的数据，你可以生成这样一张式盘，本项目为你解决了最繁冗的工作，让你可以把精力更多的放在你所需要关注的事情上面。
 
-<img width="966" alt="image" src="https://github.com/3metaJun/3meta/static/charts-2025-12-25T16-34-35.png">
+<img width="966" alt="image" src="https://github.com/3metaJun/3meta/blob/main/static/charts-2025-12-25T16-34-35.png">
 
 > [!NOTE]
 > 请合理使用本开源代码，禁止用于非法目的。
