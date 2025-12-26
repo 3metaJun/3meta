@@ -1,0 +1,88 @@
+<div align="center">
+![banner2](https://github.com/3metaJun/3meta/blob/main/static/banner2.jpg)
+
+# 一套輕量級奇門遁甲排盤工具庫
+
+简体中文 / [繁體中文](./README-zh_TW.md) / [English](./README-en_US.md)
+
+</div>
+
+## 介紹
+
+用於奇門遁甲排盤的開源程式庫，具備以下功能：
+
+*   輸入
+
+    *   排盤時間（支援 `Date` 物件或日期字串）
+    *   選用參數
+        *   `solarTerm`：指定節氣
+        *   `isYangdun`：指定陽遁或陰遁
+        *   `juNumber`：指定局數
+        *   `yearDivide`：年份分界方式（「normal」｜「exact」）
+*   可實現以下功能
+
+    *   奇門九宮的式盤資料（包含神、星、門、天盤干、地盤干等）
+    *   完整的時間資訊（四柱、節氣、旬首、空亡等）
+    *   局數資訊（陰陽遁、局數、元）
+    *   宮位分析（擊刑、門迫、入墓等）
+    *   星門旺衰
+    *   常用吉凶格局判斷
+
+## 快速跳轉
+
+*   [問題](https://github.com/3metaJun/3meta/issues)
+*   [排盤](https://3meta.pub)
+
+## 直接使用
+
+如果你希望無需開發即可直接查看 `3meta` 的奇門遁甲排盤結果，請直接使用 [三元分析與決策系統](https://3meta.pub) 進行線上排盤。
+
+*   多盤協同分析
+*   支援與 AI 流式互動
+*   支援複製為 AI 格式
+*   可將盤面儲存為 Markdown 筆記
+*   支援快捷鍵操作
+*   以及其他更多功能
+
+## 於專案中使用
+
+從網路安裝
+
+```
+npm install git+https://github.com/3metaJun/3meta.git
+```
+
+或於本機安裝
+
+```
+npm install /path/to/3meta
+```
+
+## 使用說明
+
+只要依照以下方式呼叫 `3meta`，即可非常簡單地取得奇門遁甲式盤，並獲得全部相關資訊。
+
+```typescript
+import { QimenChart } from '3meta';
+
+// 使用默认配置排盘
+const chart = QimenChart.byDatetime('2023-12-01 12:00:00');
+
+// 或者自定义参数
+const customChart = QimenChart.byDatetime('2023-12-01 12:00:00', {
+  solarTerm: '冬至',
+  isYangdun: true,
+  juNumber: 1,
+  yearDivide: 'exact'
+});
+
+console.log(chart);
+```
+
+## 總結
+
+運用本程式所回傳的資料，你就能繪製出這樣一張式盤。本專案已為你處理掉最繁瑣、最耗時的部分，讓你能將更多心力專注於你真正需要關注的事項上。
+
+![image](https://github.com/3metaJun/3meta/blob/main/static/charts-2025-12-25T16-34-35.png)
+
+> \[!NOTE\] 請務必合理使用本開源程式碼，嚴禁用於任何非法目的。

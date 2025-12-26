@@ -4,6 +4,8 @@
 
 # 一套轻量级奇门遁甲排盘工具库
 
+简体中文 / [繁體中文](./README-zh_TW.md) / [English](./README-en_US.md)
+
 </div>
 
 ## 介绍
@@ -45,12 +47,12 @@
 
 ## 在项目中使用
 
-
+从网络安装
 ```
 npm install git+https://github.com/3metaJun/3meta.git
 ```
 
-本地安装
+或者本地安装
 ```
 npm install /path/to/3meta
 ```
