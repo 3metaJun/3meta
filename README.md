@@ -43,6 +43,17 @@
 - 支持快捷键操作
 - 以及更多
 
+## 在项目中使用
+
+
+```
+npm install git+https://github.com/3metaJun/3meta.git
+```
+
+本地安装
+```
+npm install /path/to/3meta
+```
 
 ## 使用说明
 
