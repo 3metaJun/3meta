@@ -31,12 +31,13 @@ An open-source library for generating Qimen Dunjia charts, featuring the followi
 
 ## Quick Navigation
 
+*   [Tutorial](https://docs.3meta.pub/en/)
 *   [Issues](https://github.com/3metaJun/3meta/issues)
 *   [Chart Layout](https://3meta.pub)
 
 ## Direct Usage
 
-If you want to view the `3meta` chart layout results with zero development effort, simply use the online chart layout tool: [San Yuan Analysis and Decision System](https://3meta.pub).
+If you want to view the `3meta` chart layout results with zero development effort, simply use the online chart layout tool: [3meta.pub](https://3meta.pub).
 
 *   Multi-Chart Collaborative Analysis
 *   Supports streaming interaction with AI

@@ -31,12 +31,13 @@
 
 ## 快速跳轉
 
+*   [教學](https://docs.3meta.pub/)
 *   [問題](https://github.com/3metaJun/3meta/issues)
 *   [排盤](https://3meta.pub)
 
 ## 直接使用
 
-如果你希望無需開發即可直接查看 `3meta` 的奇門遁甲排盤結果，請直接使用 [三元分析與決策系統](https://3meta.pub) 進行線上排盤。
+如果你希望無需開發即可直接查看 `3meta` 的奇門遁甲排盤結果，請直接使用 [三元（3meta.pub）](https://3meta.pub) 進行線上排盤。
 
 *   多盤協同分析
 *   支援與 AI 流式互動

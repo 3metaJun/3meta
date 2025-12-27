@@ -32,12 +32,13 @@
 
 ## 快捷跳转
 
+- [教程](https://docs.3meta.pub/)
 - [问题](https://github.com/3metaJun/3meta/issues)
 - [排盘](https://3meta.pub)
 
 ## 直接使用
 
-如果你想要零开发直接查看 `3meta` 的排盘结果，请直接使用 [三元分析与决策系统](https://3meta.pub) 在线排盘。
+如果你想要零开发直接查看 `3meta` 的排盘结果，请直接使用 [三元（3meta.pub）](https://3meta.pub) 在线排盘。
 - 多盘协同分析
 - 支持与 AI 流式交互
 - 支持复制为 AI 格式
