@@ -1,6 +1,7 @@
-export { QimenChart } from './qimen/QimenChart';
+export { QimenChart, CopyrightInfo } from './qimen/QimenChart';
 export * from './qimen-types';
 export * from './analysis';
+export * from './i18n';
 export {
   TIANGAN,
   DIZHI,

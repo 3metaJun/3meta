@@ -1,25 +1,35 @@
 {
   "name": "3meta",
-  "version": "0.1.0",
+  "version": "2.0.0",
   "description": "奇门遁甲排盘 TypeScript 库",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "browser": "dist/3meta.min.js",
+  "module": "dist/3meta.esm.js",
   "bin": {
     "qimen": "bin/qimen.js",
     "get24JieQiByYear": "bin/get24JieQiByYear.js"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "build:browser": "rollup -c",
+    "build:all": "npm run build && npm run build:browser",
     "test": "jest --config jestconfig.json",
     "lint": "echo 'lint not configured'",
     "prepare": "npm run build"
   },
   "author": "3metaJun",
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.0",
+    "@rollup/plugin-node-resolve": "^15.0.0",
+    "@rollup/plugin-terser": "^0.4.0",
+    "@rollup/plugin-typescript": "^11.0.0",
     "@types/jest": "^29.5.3",
     "@types/node": "^20.11.17",
     "jest": "^29.7.0",
+    "rollup": "^4.0.0",
     "ts-jest": "^29.1.1",
+    "tslib": "^2.8.1",
     "typescript": "^5.3.3"
   },
   "dependencies": {

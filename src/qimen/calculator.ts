@@ -86,7 +86,8 @@ export const getZhiFuLuoGong = (shiGanZhi: string, xunShou: XunShou, diPan: Map<
 };
 
 export const getZhiShiInfo = (shiZhi: string, zhiFuGong: Position, isYangdun: boolean) => {
-  const zhiShiMen = (Object.keys(GATE_ORIGINAL_POSITIONS) as Gate[]).find((g) => GATE_ORIGINAL_POSITIONS[g] === zhiFuGong) as Gate;
+  const actualZhiFuGong = zhiFuGong === 5 ? 2 : zhiFuGong;
+  const zhiShiMen = (Object.keys(GATE_ORIGINAL_POSITIONS) as Gate[]).find((g) => GATE_ORIGINAL_POSITIONS[g] === actualZhiFuGong) as Gate;
   const xunShou = getXunShou(shiZhi);
   const xunBranch = xunShou[1];
   const shiBranch = shiZhi[1];
@@ -108,8 +109,13 @@ export const getZhiShiInfo = (shiZhi: string, zhiFuGong: Position, isYangdun: bo
 
 export const arrangeTianPan = (zhiFuStar: Star, zhiFuLuoGong: Position, diPan: Map<Position, HeavenlyStem>) => {
   const tianPan = new Map<Position, { star: Star; heavenlyStem: HeavenlyStem }>();
-  const zhiFuIdx = STAR_SEQUENCE.indexOf(zhiFuStar);
+
+  // 当值符星是天禽时（旬首六仪在中5宫），天禽跟随天芮
+  // 此时应以天芮作为基准排布天盘
+  const effectiveStar: Star = zhiFuStar === '天禽' ? '天芮' : zhiFuStar;
+  const zhiFuIdx = STAR_SEQUENCE.indexOf(effectiveStar);
   const startIdx = PALACE_CLOCKWISE.indexOf(zhiFuLuoGong === 5 ? 2 : zhiFuLuoGong);
+
   for (let i = 0; i < 8; i += 1) {
     const palace = PALACE_CLOCKWISE[(startIdx + i) % 8];
     const star = STAR_SEQUENCE[(zhiFuIdx + i) % 8];
@@ -117,7 +123,23 @@ export const arrangeTianPan = (zhiFuStar: Star, zhiFuLuoGong: Position, diPan: M
     const stem = diPan.get(originPalace)!;
     tianPan.set(palace, { star, heavenlyStem: stem });
   }
+
+  // 中宫始终设置天禽及其地盘天干
   tianPan.set(5, { star: '天禽', heavenlyStem: diPan.get(5)! });
+
+  // 如果值符星是天禽，需要在值符落宫额外设置天禽星和中5宫的天干
+  // 这样天禽就跟随天芮一起出现在落宫
+  if (zhiFuStar === '天禽' && zhiFuLuoGong !== 5) {
+    const existing = tianPan.get(zhiFuLuoGong);
+    if (existing) {
+      // 天禽跟随天芮，携带中5宫的天干
+      tianPan.set(zhiFuLuoGong, {
+        star: [existing.star, '天禽'] as any,
+        heavenlyStem: [existing.heavenlyStem, diPan.get(5)!] as any
+      });
+    }
+  }
+
   return tianPan;
 };
 
@@ -144,12 +166,16 @@ export const handleMiddlePalace = (isYangdun: boolean, palaces: Palace[]): Palac
     target.earthlyStem = [existing[0], extra];
   }
   const tianRui = result.find((p) => Array.isArray(p.star) ? (p.star as Star[]).includes('天芮') : p.star === '天芮');
+  // 只有当天芮所在宫位还没有天禽时才添加（避免与天禽作为值符星时的重复）
   if (tianRui && tianRui.position !== 5) {
-    const addStem = center.earthlyStem as HeavenlyStem;
-    const stars = Array.isArray(tianRui.star) ? tianRui.star.slice(0, 1) : [tianRui.star as Star];
-    tianRui.star = [stars[0], '天禽'];
-    const stems = Array.isArray(tianRui.heavenlyStem) ? tianRui.heavenlyStem.slice(0, 1) : [tianRui.heavenlyStem as HeavenlyStem];
-    tianRui.heavenlyStem = [stems[0], addStem];
+    const hasQinAlready = Array.isArray(tianRui.star) && (tianRui.star as Star[]).includes('天禽');
+    if (!hasQinAlready) {
+      const addStem = center.earthlyStem as HeavenlyStem;
+      const stars = Array.isArray(tianRui.star) ? tianRui.star.slice(0, 1) : [tianRui.star as Star];
+      tianRui.star = [stars[0], '天禽'];
+      const stems = Array.isArray(tianRui.heavenlyStem) ? tianRui.heavenlyStem.slice(0, 1) : [tianRui.heavenlyStem as HeavenlyStem];
+      tianRui.heavenlyStem = [stems[0], addStem];
+    }
   }
   return result;
 };
@@ -162,6 +188,65 @@ export const arrangeGates = (zhiShiGong: Position, zhiShiGate: Gate) => {
     gates.set(PALACE_CLOCKWISE[(startIdx + i) % 8], GATE_SEQUENCE[(gateIdx + i) % 8]);
   }
   return gates;
+};
+
+/**
+ * 计算暗干排布
+ * @param valueDoorPalace 值使门所在宫位
+ * @param hourStem 时干（转换后的实际天干，甲时用遁干代替）
+ * @param isYangdun 是否阳遁
+ * @param originalHourStem 原始时干
+ * @param zhiFuPalace 值符所在宫位
+ * @param diPan 地盘
+ * @returns Map<宫位, 暗干>
+ */
+export const calculateHiddenStems = (
+  valueDoorPalace: Position,
+  hourStem: HeavenlyStem,
+  isYangdun: boolean,
+  originalHourStem: HeavenlyStem,
+  zhiFuPalace: Position,
+  diPan: Map<Position, HeavenlyStem>
+): Map<Position, HeavenlyStem> => {
+  const hiddenStems = new Map<Position, HeavenlyStem>();
+  const stems: HeavenlyStem[] = ['戊', '己', '庚', '辛', '壬', '癸', '丁', '丙', '乙'];
+  const stemIndex = stems.indexOf(hourStem);
+
+  if (stemIndex === -1) return hiddenStems;
+
+  let startPalace = valueDoorPalace;
+
+  // 特殊情况1：时干为甲
+  if (originalHourStem === '甲') {
+    const centerStem = diPan.get(5);
+    // 如果旬首天干与中宫地盘天干不同，从中宫开始
+    // 否则（相同），从值使门开始（保持默认）
+    if (hourStem !== centerStem) {
+      startPalace = 5;
+    }
+  }
+  // 特殊情况2：值符值使同宫
+  // 仅在非甲时考虑（或者甲时规则未强制指定从中宫开始？这里假设甲时规则优先）
+  else if (zhiFuPalace === valueDoorPalace) {
+    startPalace = 5;
+  }
+
+  // 确定宫位顺序
+  // 阳遁顺排：1-2-3-4-5-6-7-8-9
+  // 阴遁逆排：9-8-7-6-5-4-3-2-1
+  const palaceOrder: Position[] = isYangdun
+    ? [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    : [9, 8, 7, 6, 5, 4, 3, 2, 1];
+
+  const startPalaceIdx = palaceOrder.indexOf(startPalace);
+
+  for (let i = 0; i < 9; i++) {
+    const currentStem = stems[(stemIndex + i) % 9];
+    const palace = palaceOrder[(startPalaceIdx + i) % 9];
+    hiddenStems.set(palace, currentStem);
+  }
+
+  return hiddenStems;
 };
 
 export const calculateLiuYiJiXing = (position: Position, tianGan: HeavenlyStem): { hasJiXing: boolean; type?: '甲子戊' | '甲戌己' | '甲申庚' | '甲午辛' | '甲辰壬' | '甲寅癸'; description?: string } => {

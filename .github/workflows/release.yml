@@ -1,0 +1,64 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Read repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '24.11.1'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build all versions
+        run: npm run build:all
+
+      - name: Create tarball
+        run: tar -czf 3meta-min-js.tar.gz dist/*.min.js dist/*.map
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            3meta-min-js.tar.gz
+            dist/3meta.min.js
+            dist/3meta.min.js.map
+            dist/3meta.esm.js
+          body: |
+            ## 🎉 3meta v2.0.0
+
+            ### ✨ 新功能
+            - ✅ 新增值使门暗干排布
+            - ✅ 提供浏览器版本
+            - ✅ 基础 i18n 框架
+        
+            ### 🐛 修复的 BUG
+            - 修复值使门为空的 BUG
+            - 修复值符所在的宫缺少天盘天干的问题
+            
+            ### 📦 下载
+            - **浏览器版本**：`3meta-min-js.tar.gz`
+            - **UMD 格式**：`3meta.min.js`
+            - **ESM 格式**：`3meta.esm.js`
+
+            ### 📝 使用示例
+            ```html
+            <script src="3meta.min.js"></script>
+            <script>
+              const chart = ThreeMeta.QimenChart.byDatetime('2023-12-01 12:00:00');
+              console.log(chart);
+            </script>
+            ```
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

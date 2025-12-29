@@ -58,6 +58,22 @@ npm install git+https://github.com/3metaJun/3meta.git
 npm install /path/to/3meta
 ```
 
+## 独立 JavaScript 库
+假如你使用的是静态 HTML 文件，可以下载 [release]() 资源文件。
+
+> `v2.0.0+` 版本才提供独立js库。
+
+将 `3meta.min.js` 用 `script` 标签引入 HTML 文件使用。
+
+```html
+<script src="3meta.min.js"></script>
+<script>
+    const chart = ThreeMeta.QimenChart.byDatetime('2023-12-01 12:00:00');
+    console.log(chart);
+</script>
+</html>
+```
+
 ## 使用说明
 
 调用 `3meta` 获取到奇门遁甲式盘非常简单，只需要按照如下方式即可获得全部信息。

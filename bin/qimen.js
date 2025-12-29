@@ -78,9 +78,7 @@ const main = () => {
     process.exit(1);
   }
 
-  const { timeInfo, fourPillars, ju, yuan, ...rest } = chart;
-  const ordered = { timeInfo, fourPillars, ju, yuan, ...rest };
-  console.log(JSON.stringify(ordered, null, 2));
+  console.log(JSON.stringify(chart, null, 2));
 };
 
 main();
