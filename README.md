@@ -29,6 +29,7 @@
     - 宫位分析（击刑、门迫、入墓等）
     - 星门旺衰
     - 常用吉凶格局判断
+    - 暗干信息
 
 ## 快捷跳转
 
@@ -59,7 +60,7 @@ npm install /path/to/3meta
 ```
 
 ## 独立 JavaScript 库
-假如你使用的是静态 HTML 文件，可以下载 [release]() 资源文件。
+假如你使用的是静态 HTML 文件，可以从 [release](https://github.com/3metaJun/3meta/releases) 下载资源文件。
 
 > `v2.0.0+` 版本才提供独立js库。
 

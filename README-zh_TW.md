@@ -28,6 +28,7 @@
     *   宮位分析（擊刑、門迫、入墓等）
     *   星門旺衰
     *   常用吉凶格局判斷
+    *   暗干資訊
 
 ## 快速跳轉
 
@@ -58,6 +59,23 @@ npm install git+https://github.com/3metaJun/3meta.git
 
 ```
 npm install /path/to/3meta
+```
+
+## 獨立 JavaScript 庫
+
+如果你使用的是靜態 HTML 檔案，可從 [版本發行頁面](https://github.com/3metaJun/3meta/releases) 下載資源檔案。
+
+> `v2.0.0+` 版本才提供獨立 js 庫。
+
+將 `3meta.min.js` 用 `script` 標簽引入 HTML 文件使用。
+
+```html
+<script src="3meta.min.js"></script>
+<script>
+    const chart = ThreeMeta.QimenChart.byDatetime('2023-12-01 12:00:00');
+    console.log(chart);
+</script>
+</html>
 ```
 
 ## 使用說明

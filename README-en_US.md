@@ -28,6 +28,7 @@ An open-source library for generating Qimen Dunjia charts, featuring the followi
     *   Palace analysis (Ji Xing, Men Po, Ru Mu, etc.)
     *   Star and Door strength/weakness
     *   Common Auspicious and Inauspicious Pattern Judgments
+    *   Hidden Stem Information
 
 ## Quick Navigation
 
@@ -58,6 +59,23 @@ Or Installing Locally
 
 ```
 npm install /path/to/3meta
+```
+
+## Standalone JavaScript library
+
+If you are using a static HTML file, you can download library file from the [release](https://github.com/3metaJun/3meta/releases).
+
+> `v2.0.0+` version provide。
+
+usage example:
+
+```html
+<script src="3meta.min.js"></script>
+<script>
+    const chart = ThreeMeta.QimenChart.byDatetime('2023-12-01 12:00:00');
+    console.log(chart);
+</script>
+</html>
 ```
 
 ## Usage Instructions
