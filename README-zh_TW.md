@@ -9,8 +9,10 @@
 </div>
 
 <div align="center">
+
   [![NPM Version](https://img.shields.io/npm/v/3meta)](https://www.npmjs.com/package/3meta)
   [![License](https://img.shields.io/github/license/3metaJun/3meta)](https://github.com/3metaJun/3meta)
+  
 </div>
 
 ## 介紹
