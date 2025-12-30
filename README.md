@@ -1,6 +1,7 @@
 <div align="center">
 
 ![banner2](https://github.com/3metaJun/3meta/blob/main/static/banner2.jpg)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2F3metaJun%2F3meta.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2F3metaJun%2F3meta?ref=badge_shield)
 
 # 一套轻量级奇门遁甲排盘工具库
 
@@ -14,6 +15,9 @@
   [![License](https://img.shields.io/github/license/3metaJun/3meta)](https://github.com/3metaJun/3meta)
   
 </div>
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2F3metaJun%2F3meta.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2F3metaJun%2F3meta?ref=badge_large)
 
 ## 介绍
 
