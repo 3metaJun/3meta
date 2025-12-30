@@ -127,6 +127,7 @@ const customChart = QimenChart.byDatetime('2023-12-01 12:00:00', {
 });
 
 console.log(chart);
+```
 
 ## 多語言支援 (i18n)
 
