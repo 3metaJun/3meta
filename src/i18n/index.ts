@@ -2,18 +2,20 @@
  * i18n 国际化主入口
  */
 
-import { Locale, LocaleMessages } from './types';
+import { Locale, LocaleMessages, NestedKeyOf } from './types';
 import { zhCN } from './locales/zh-CN';
+import { zhTW } from './locales/zh-TW';
+import { enUS } from './locales/en-US';
 
 class I18n {
   private locale: Locale = 'zh-CN';
   private messages: Record<Locale, LocaleMessages> = {
     'zh-CN': zhCN,
-    'zh-TW': zhCN, // TODO: 繁体中文，暂时使用简体
-    'en-US': zhCN, // TODO: 英文，暂时使用简体
+    'zh-TW': zhTW,
+    'en-US': enUS,
   };
 
-  constructor() {}
+  constructor() { }
 
   /**
    * 设置当前语言
@@ -46,7 +48,7 @@ class I18n {
    * @param key 支持嵌套路径，如 'stems.甲', 'gates.开门', 'fields.position'
    * @param params 模板参数（可选）
    */
-  t(key: string, params?: Record<string, any>): string {
+  t(key: NestedKeyOf<LocaleMessages> | (string & {}), params?: Record<string, any>): string {
     const keys = key.split('.');
     let value: any = this.messages[this.locale];
 
@@ -93,4 +95,7 @@ export const i18n = new I18n();
  */
 export * from './types';
 export { zhCN } from './locales/zh-CN';
+export { zhTW } from './locales/zh-TW';
+export { enUS } from './locales/en-US';
+export * from './formatters';
 

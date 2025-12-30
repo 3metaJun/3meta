@@ -89,6 +89,9 @@ export interface LocaleMessages {
     description?: string;
   }>;
 
+  /** 格局模版 */
+  patterns: Record<string, Record<string, string>>;
+
   /** 字段标签 */
   fields: {
     version: string;
@@ -139,3 +142,12 @@ export interface LocaleMessages {
     ju: string;
   };
 }
+
+/**
+ * 辅助类型：获取嵌套对象的键路径
+ */
+export type NestedKeyOf<ObjectType extends object> = {
+  [Key in keyof ObjectType & (string | number)]: ObjectType[Key] extends object
+  ? `${Key}` | `${Key}.${NestedKeyOf<ObjectType[Key]>}`
+  : `${Key}`;
+}[keyof ObjectType & (string | number)];

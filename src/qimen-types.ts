@@ -116,21 +116,29 @@ export type TenStemResponse = {
     heavenlyToEarthly: {
         /** 关系类型 */
         relation: '比和' | '生我' | '克我' | '我生' | '我克' | '无';
-        /** 具体描述 */
-        description: string;
+        /** 关系ID */
+        id?: string;
+        /** 参数 */
+        params?: Record<string, any>;
+        /** 具体描述 (Deprecated) */
+        description?: string;
         /** 是否吉利 */
         isAuspicious?: boolean;
     };
     /** 时干与日干的关系 */
     timeToDay?: {
         relation: '比和' | '生我' | '克我' | '我生' | '我克' | '无';
-        description: string;
+        id?: string;
+        params?: Record<string, any>;
+        description?: string;
         isAuspicious?: boolean;
     };
     /** 天盘天干与日干的关系 */
     heavenlyToDay?: {
         relation: '比和' | '生我' | '克我' | '我生' | '我克' | '无';
-        description: string;
+        id?: string;
+        params?: Record<string, any>;
+        description?: string;
         isAuspicious?: boolean;
     };
 };
@@ -162,27 +170,39 @@ export type GatePressure = '迫' | '制' | '和' | '义';
  * 吉格类型
  */
 export type AuspiciousPattern = {
-    /** 格局名称 */
+    /** 格局ID (i18n key) */
+    id: string;
+    /** 格局名称 (Deprecated, use id) */
     name: string;
-    /** 格局类型 */
-    type: '青龙返首' | '飞鸟跌穴' | '九遁' | '三奇得使' | '玉女守门' | '三奇贵人升殿' | '天显时格' | '三诈五假' | '三奇之灵' | '奇游禄位' | '欢怡' | '奇仪相和' | '门宫和义' | '天遁' | '地遁' | '人遁' | '风遁' | '云遁' | '龙遁' | '虎遁' | '神遁' | '鬼遁' | '真诈' | '休诈' | '重诈' | '天假' | '地假' | '人假' | '神假' | '鬼假' | '奇和' | '仪和';
+    /** 格局类型 (Legacy Chinese Type, Deprecated) */
+    type: string;
+    /** 子类型ID */
+    sub_type?: string;
+    /** 参数 */
+    params?: Record<string, any>;
     /** 所在宫位 */
     position: Position;
-    /** 详细描述 */
-    description: string;
+    /** 详细描述 (Deprecated, use params and i18n) */
+    description?: string;
 };
 /**
  * 凶格类型
  */
 export type InauspiciousPattern = {
-    /** 格局名称 */
+    /** 格局ID (i18n key) */
+    id: string;
+    /** 格局名称 (Deprecated, use id) */
     name: string;
-    /** 格局类型 */
-    type: '青龙逃走' | '白虎猖狂' | '朱雀投江' | '螣蛇夭矫' | '荧入太白' | '太白入荧' | '大格' | '小格' | '刑格' | '奇格' | '伏宫格' | '飞宫格' | '岁格' | '月格' | '日格' | '飞干格' | '伏干格' | '时格' | '六仪击刑' | '三奇入墓' | '三奇受刑' | '时干入墓' | '门迫' | '悖格' | '天网四张' | '五不遇时';
+    /** 格局类型 (Legacy Chinese Type, Deprecated) */
+    type: string;
+    /** 子类型ID */
+    sub_type?: string;
+    /** 参数 */
+    params?: Record<string, any>;
     /** 所在宫位（某些格局可能不限宫位） */
     position?: Position;
-    /** 详细描述 */
-    description: string;
+    /** 详细描述 (Deprecated, use params and i18n) */
+    description?: string;
 };
 /**
  * 伏吟反吟详细信息
@@ -348,7 +368,11 @@ export type SpecialPatterns = {
         position: Position;
         gate: Gate;
         gatePressure: GatePressure;
-        description: string;
+        /** ID for i18n */
+        id?: string;
+        /** Params for i18n */
+        params?: Record<string, any>;
+        description?: string;
     }>;
     /** 所有吉格 */
     auspiciousPatterns?: AuspiciousPattern[];

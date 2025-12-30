@@ -29,6 +29,27 @@ An open-source library for generating Qimen Dunjia charts, featuring the followi
     *   Star and Door strength/weakness
     *   Common Auspicious and Inauspicious Pattern Judgments
     *   Hidden Stem Information
+    *   Multi-language Support (zh-CN, zh-TW, en-US)
+
+## Command Line Interface (CLI)
+
+`3meta` provides a convenient CLI tool `qimen` that supports generating chart data in JSON format with multi-language support.
+
+```bash
+# Global installation (if published to npm)
+npm install -g 3meta
+qimen --date 2023-12-01T12:00:00 --lang en-US
+
+# Or use within the project
+npm run build
+node bin/qimen.js --date 2023-12-01T12:00:00 --lang en-US
+```
+
+Supported arguments:
+- `--date`: Date time (ISO)
+- `--lang`: Language (zh-CN, zh-TW, en-US)
+- `--solarTerm`: Specify solar term
+- And more (Check `node bin/qimen.js --help`)
 
 ## Quick Navigation
 

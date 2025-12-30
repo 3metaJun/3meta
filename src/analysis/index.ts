@@ -215,13 +215,25 @@ export const calcTenStemResponse = (
   const heavenlyToEarthly = (!h || !e)
     ? { relation: '无', description: '无' }
     : (() => {
-        const rel = relate(STEM_FIVE_ELEMENTS[h], STEM_FIVE_ELEMENTS[e]);
-        return { relation: rel as any, description: `${h}${STEM_FIVE_ELEMENTS[h]}${rel === '比和' ? '比和' : rel === '我生' ? '生' : rel === '生我' ? '被生' : rel === '我克' ? '克' : '被克'}${e}${STEM_FIVE_ELEMENTS[e]}`, isAuspicious: ['比和', '生我', '我生'].includes(rel) };
-      })();
+      const rel = relate(STEM_FIVE_ELEMENTS[h], STEM_FIVE_ELEMENTS[e]);
+      return {
+        relation: rel as any,
+        id: 'patterns.ten_stem.template',
+        params: { h, hEle: STEM_FIVE_ELEMENTS[h], rel, e, eEle: STEM_FIVE_ELEMENTS[e] },
+        description: `${h}${STEM_FIVE_ELEMENTS[h]}${rel === '比和' ? '比和' : rel === '我生' ? '生' : rel === '生我' ? '被生' : rel === '我克' ? '克' : '被克'}${e}${STEM_FIVE_ELEMENTS[e]}`,
+        isAuspicious: ['比和', '生我', '我生'].includes(rel)
+      };
+    })();
   const build = (src?: HeavenlyStem, target?: HeavenlyStem) => {
     if (!src || !target) return { relation: '无', description: '无' } as const;
     const rel = relate(STEM_FIVE_ELEMENTS[src], STEM_FIVE_ELEMENTS[target]);
-    return { relation: rel as any, description: `${src}${STEM_FIVE_ELEMENTS[src]}${rel === '比和' ? '比和' : rel === '我生' ? '生' : rel === '生我' ? '被生' : rel === '我克' ? '克' : '被克'}${target}${STEM_FIVE_ELEMENTS[target]}`, isAuspicious: ['比和', '生我', '我生'].includes(rel) };
+    return {
+      relation: rel as any,
+      id: 'patterns.ten_stem.template',
+      params: { h: src, hEle: STEM_FIVE_ELEMENTS[src], rel, e: target, eEle: STEM_FIVE_ELEMENTS[target] },
+      description: `${src}${STEM_FIVE_ELEMENTS[src]}${rel === '比和' ? '比和' : rel === '我生' ? '生' : rel === '生我' ? '被生' : rel === '我克' ? '克' : '被克'}${target}${STEM_FIVE_ELEMENTS[target]}`,
+      isAuspicious: ['比和', '生我', '我生'].includes(rel)
+    };
   };
   return {
     heavenlyToEarthly,
@@ -278,40 +290,104 @@ export const detectPatterns = (
 
   // 天遁：天盘丙+地盘丁+生门
   if (heavenly.includes('丙') && earthly.includes('丁') && hasSheng) {
-    auspicious.push({ name: '九遁', type: '天遁', position: palace.position, description: '天盘丙+地盘丁+生门' });
+    auspicious.push({
+      id: 'patterns.jiu_dun.tian_dun',
+      name: '九遁',
+      type: '天遁',
+      position: palace.position,
+      params: { heaven: '丙', earth: '丁', gate: '生门' },
+      description: '天盘丙+地盘丁+生门'
+    });
   }
   // 地遁：天盘乙+地盘己+开门
   if (heavenly.includes('乙') && earthly.includes('己') && hasKai) {
-    auspicious.push({ name: '九遁', type: '地遁', position: palace.position, description: '天盘乙+地盘己+开门' });
+    auspicious.push({
+      id: 'patterns.jiu_dun.di_dun',
+      name: '九遁',
+      type: '地遁',
+      position: palace.position,
+      params: { heaven: '乙', earth: '己', gate: '开门' },
+      description: '天盘乙+地盘己+开门'
+    });
   }
   // 人遁：天盘丁+休门+太阴
   if (heavenly.includes('丁') && hasXiu && hasTaiYin) {
-    auspicious.push({ name: '九遁', type: '人遁', position: palace.position, description: '天盘丁+休门+太阴' });
+    auspicious.push({
+      id: 'patterns.jiu_dun.ren_dun',
+      name: '九遁',
+      type: '人遁',
+      position: palace.position,
+      params: { heaven: '丁', gate: '休门', deity: '太阴' },
+      description: '天盘丁+休门+太阴'
+    });
   }
   // 风遁：天盘乙+开/休/生门+巽4宫
   if (heavenly.includes('乙') && (hasKai || hasXiu || hasSheng) && palace.position === 4) {
-    auspicious.push({ name: '九遁', type: '风遁', position: palace.position, description: '天盘乙+开/休/生门+巽4宫' });
+    auspicious.push({
+      id: 'patterns.jiu_dun.feng_dun',
+      name: '九遁',
+      type: '风遁',
+      position: palace.position,
+      params: { heaven: '乙', gate: palace.gate, palace: '巽4宫' },
+      description: '天盘乙+开/休/生门+巽4宫'
+    });
   }
   // 云遁：天盘乙+开/休/生门+地盘辛
   if (heavenly.includes('乙') && (hasKai || hasXiu || hasSheng) && earthly.includes('辛')) {
-    auspicious.push({ name: '九遁', type: '云遁', position: palace.position, description: '天盘乙+开/休/生门+地盘辛' });
+    auspicious.push({
+      id: 'patterns.jiu_dun.yun_dun',
+      name: '九遁',
+      type: '云遁',
+      position: palace.position,
+      params: { heaven: '乙', gate: palace.gate, earth: '辛' },
+      description: '天盘乙+开/休/生门+地盘辛'
+    });
   }
   // 龙遁：天盘乙+开/休/生门+坎1宫/地盘癸
   if (heavenly.includes('乙') && (hasKai || hasXiu || hasSheng) && (palace.position === 1 || earthly.includes('癸'))) {
-    auspicious.push({ name: '九遁', type: '龙遁', position: palace.position, description: '天盘乙+开/休/生门+坎1宫/地盘癸' });
+    auspicious.push({
+      id: 'patterns.jiu_dun.long_dun',
+      name: '九遁',
+      type: '龙遁',
+      position: palace.position,
+      params: { heaven: '乙', gate: palace.gate, condition: palace.position === 1 ? '坎1宫' : '地盘癸' },
+      description: '天盘乙+开/休/生门+坎1宫/地盘癸'
+    });
   }
   // 虎遁：天盘乙+休/生门+艮8宫/地盘辛 or 天盘庚+开门+兑7宫
   if ((heavenly.includes('乙') && (hasXiu || hasSheng) && (palace.position === 8 || earthly.includes('辛'))) ||
-      (heavenly.includes('庚') && hasKai && palace.position === 7)) {
-    auspicious.push({ name: '九遁', type: '虎遁', position: palace.position, description: '天盘乙+休/生门+艮8宫/地盘辛 或 天盘庚+开门+兑7宫' });
+    (heavenly.includes('庚') && hasKai && palace.position === 7)) {
+    const isGeng = heavenly.includes('庚');
+    auspicious.push({
+      id: 'patterns.jiu_dun.hu_dun',
+      name: '九遁',
+      type: '虎遁',
+      position: palace.position,
+      params: { condition: isGeng ? '天盘庚+开门+兑7宫' : '天盘乙+休/生门+艮8宫/地盘辛' },
+      description: '天盘乙+休/生门+艮8宫/地盘辛 或 天盘庚+开门+兑7宫'
+    });
   }
   // 神遁：天盘丙+生门+九天
   if (heavenly.includes('丙') && hasSheng && hasJiuTian) {
-    auspicious.push({ name: '九遁', type: '神遁', position: palace.position, description: '天盘丙+生门+九天' });
+    auspicious.push({
+      id: 'patterns.jiu_dun.shen_dun',
+      name: '九遁',
+      type: '神遁',
+      position: palace.position,
+      params: { heaven: '丙', gate: '生门', deity: '九天' },
+      description: '天盘丙+生门+九天'
+    });
   }
   // 鬼遁：天盘丁+杜门+九地
   if (heavenly.includes('丁') && hasDu && hasJiuDi) {
-    auspicious.push({ name: '九遁', type: '鬼遁', position: palace.position, description: '天盘丁+杜门+九地' });
+    auspicious.push({
+      id: 'patterns.jiu_dun.gui_dun',
+      name: '九遁',
+      type: '鬼遁',
+      position: palace.position,
+      params: { heaven: '丁', gate: '杜门', deity: '九地' },
+      description: '天盘丁+杜门+九地'
+    });
   }
 
   // 三诈五假
@@ -322,64 +398,124 @@ export const detectPatterns = (
 
   // 真诈：开/休/生门+太阴
   if (sanMen && hasTaiYin) {
-    auspicious.push({ name: '三诈五假', type: '真诈', position: palace.position, description: '开/休/生门+太阴' });
+    auspicious.push({
+      id: 'patterns.san_za_wu_jia.zhen_zha',
+      name: '三诈五假', type: '真诈', position: palace.position,
+      params: { gate: palace.gate, deity: '太阴' },
+      description: '开/休/生门+太阴'
+    });
   }
   // 休诈：开/休/生门+地盘乙/丙/丁+六合
   if (sanMen && diPanYiBingDing && hasLiuHe) {
-    auspicious.push({ name: '三诈五假', type: '休诈', position: palace.position, description: '开/休/生门+地盘乙/丙/丁+六合' });
+    auspicious.push({
+      id: 'patterns.san_za_wu_jia.xiu_zha',
+      name: '三诈五假', type: '休诈', position: palace.position,
+      params: { gate: palace.gate, earth: earthly.find(s => ['乙', '丙', '丁'].includes(s)), deity: '六合' },
+      description: '开/休/生门+地盘乙/丙/丁+六合'
+    });
   }
   // 重诈：开/休/生门+地盘乙/丙/丁+九地
   if (sanMen && diPanYiBingDing && hasJiuDi) {
-    auspicious.push({ name: '三诈五假', type: '重诈', position: palace.position, description: '开/休/生门+地盘乙/丙/丁+九地' });
+    auspicious.push({
+      id: 'patterns.san_za_wu_jia.chong_zha',
+      name: '三诈五假', type: '重诈', position: palace.position,
+      params: { gate: palace.gate, earth: earthly.find(s => ['乙', '丙', '丁'].includes(s)), deity: '九地' },
+      description: '开/休/生门+地盘乙/丙/丁+九地'
+    });
   }
   // 天假：天盘乙/丙/丁+景门+九天
   if (tianPanYiBingDing && hasJing && hasJiuTian) {
-    auspicious.push({ name: '三诈五假', type: '天假', position: palace.position, description: '天盘乙/丙/丁+景门+九天' });
+    auspicious.push({
+      id: 'patterns.san_za_wu_jia.tian_jia',
+      name: '三诈五假', type: '天假', position: palace.position,
+      params: { heaven: heavenly.find(s => ['乙', '丙', '丁'].includes(s)), gate: '景门', deity: '九天' },
+      description: '天盘乙/丙/丁+景门+九天'
+    });
   }
   // 地假：地盘丁/己/癸+杜门+九地/太阴/六合
   if (diPanDingJiGui && hasDu && (hasJiuDi || hasTaiYin || hasLiuHe)) {
-    auspicious.push({ name: '三诈五假', type: '地假', position: palace.position, description: '地盘丁/己/癸+杜门+九地/太阴/六合' });
+    auspicious.push({
+      id: 'patterns.san_za_wu_jia.di_jia',
+      name: '三诈五假', type: '地假', position: palace.position,
+      params: { earth: earthly.find(s => ['丁', '己', '癸'].includes(s)), gate: '杜门', deity: palace.deity },
+      description: '地盘丁/己/癸+杜门+九地/太阴/六合'
+    });
   }
   // 人假：地盘壬+惊门+九天
   if (earthly.includes('壬') && hasJingMen && hasJiuTian) {
-    auspicious.push({ name: '三诈五假', type: '人假', position: palace.position, description: '地盘壬+惊门+九天' });
+    auspicious.push({
+      id: 'patterns.san_za_wu_jia.ren_jia',
+      name: '三诈五假', type: '人假', position: palace.position,
+      params: { earth: '壬', gate: '惊门', deity: '九天' },
+      description: '地盘壬+惊门+九天'
+    });
   }
   // 神假：地盘丁/己/癸+伤门+九地
   if (diPanDingJiGui && hasShang && hasJiuDi) {
-    auspicious.push({ name: '三诈五假', type: '神假', position: palace.position, description: '地盘丁/己/癸+伤门+九地' });
+    auspicious.push({
+      id: 'patterns.san_za_wu_jia.shen_jia',
+      name: '三诈五假', type: '神假', position: palace.position,
+      params: { earth: earthly.find(s => ['丁', '己', '癸'].includes(s)), gate: '伤门', deity: '九地' },
+      description: '地盘丁/己/癸+伤门+九地'
+    });
   }
   // 鬼假：地盘丁/己/癸+死门+九地
   if (diPanDingJiGui && hasSi && hasJiuDi) {
-    auspicious.push({ name: '三诈五假', type: '鬼假', position: palace.position, description: '地盘丁/己/癸+死门+九地' });
+    auspicious.push({
+      id: 'patterns.san_za_wu_jia.gui_jia',
+      name: '三诈五假', type: '鬼假', position: palace.position,
+      params: { earth: earthly.find(s => ['丁', '己', '癸'].includes(s)), gate: '死门', deity: '九地' },
+      description: '地盘丁/己/癸+死门+九地'
+    });
   }
 
   // 三奇之灵：地盘乙/丙/丁+开/休/生门+太阴/六合/九地/九天
   if (diPanYiBingDing && sanMen && (hasTaiYin || hasLiuHe || hasJiuDi || hasJiuTian)) {
-    auspicious.push({ name: '三奇之灵', type: '三奇之灵', position: palace.position, description: '地盘乙/丙/丁+开/休/生门+太阴/六合/九地/九天' });
+    auspicious.push({
+      id: 'patterns.common.san_qi_zhi_ling',
+      name: '三奇之灵', type: '三奇之灵', position: palace.position,
+      params: { earth: earthly.find(s => ['乙', '丙', '丁'].includes(s)), gate: palace.gate, deity: palace.deity },
+      description: '地盘乙/丙/丁+开/休/生门+太阴/六合/九地/九天'
+    });
   }
 
   // 奇游禄位
   if (sanMen) {
-    if (earthly.includes('乙') && palace.position === 3) auspicious.push({ name: '奇游禄位', type: '奇游禄位', position: palace.position, description: '地盘乙+震3宫+开/休/生门' });
-    if (earthly.includes('丙') && palace.position === 4) auspicious.push({ name: '奇游禄位', type: '奇游禄位', position: palace.position, description: '地盘丙+巽4宫+开/休/生门' });
-    if (earthly.includes('丁') && palace.position === 9) auspicious.push({ name: '奇游禄位', type: '奇游禄位', position: palace.position, description: '地盘丁+离9宫+开/休/生门' });
+    if (earthly.includes('乙') && palace.position === 3) auspicious.push({ id: 'patterns.common.qi_you_lu_wei', name: '奇游禄位', type: '奇游禄位', position: palace.position, params: { earth: '乙', palace: '震3宫', gate: palace.gate }, description: '地盘乙+震3宫+开/休/生门' });
+    if (earthly.includes('丙') && palace.position === 4) auspicious.push({ id: 'patterns.common.qi_you_lu_wei', name: '奇游禄位', type: '奇游禄位', position: palace.position, params: { earth: '丙', palace: '巽4宫', gate: palace.gate }, description: '地盘丙+巽4宫+开/休/生门' });
+    if (earthly.includes('丁') && palace.position === 9) auspicious.push({ id: 'patterns.common.qi_you_lu_wei', name: '奇游禄位', type: '奇游禄位', position: palace.position, params: { earth: '丁', palace: '离9宫', gate: palace.gate }, description: '地盘丁+离9宫+开/休/生门' });
   }
 
   // 欢怡：地盘乙/丙/丁+值符
   if (diPanYiBingDing && hasZhiFu) {
-    auspicious.push({ name: '欢怡', type: '欢怡', position: palace.position, description: '地盘乙/丙/丁+值符' });
+    auspicious.push({
+      id: 'patterns.common.huan_yi',
+      name: '欢怡', type: '欢怡', position: palace.position,
+      params: { earth: earthly.find(s => ['乙', '丙', '丁'].includes(s)), deity: palace.deity },
+      description: '地盘乙/丙/丁+值符'
+    });
   }
 
   // 奇仪相和
   if (sanMen) {
     if ((heavenly.includes('乙') && earthly.includes('庚')) ||
-        (heavenly.includes('丙') && earthly.includes('辛')) ||
-        (heavenly.includes('丁') && earthly.includes('壬'))) {
-      auspicious.push({ name: '奇仪相和', type: '奇和', position: palace.position, description: '奇和：天盘乙+地盘庚 / 天盘丙+地盘辛 / 天盘丁+地盘壬' });
+      (heavenly.includes('丙') && earthly.includes('辛')) ||
+      (heavenly.includes('丁') && earthly.includes('壬'))) {
+      auspicious.push({
+        id: 'patterns.common.qi_he',
+        name: '奇仪相和', type: '奇和', position: palace.position,
+        params: { heaven: heavenly.find(s => ['乙', '丙', '丁'].includes(s)), earth: earthly.find(s => ['庚', '辛', '壬'].includes(s)) },
+        description: '奇和：天盘乙+地盘庚 / 天盘丙+地盘辛 / 天盘丁+地盘壬'
+      });
     }
     if ((heavenly.includes('戊') && earthly.includes('癸')) ||
-        (heavenly.includes('甲') && earthly.includes('己'))) {
-      auspicious.push({ name: '奇仪相和', type: '仪和', position: palace.position, description: '仪和：天盘戊+地盘癸 / 天盘甲+地盘己' });
+      (heavenly.includes('甲') && earthly.includes('己'))) {
+      auspicious.push({
+        id: 'patterns.common.yi_he',
+        name: '奇仪相和', type: '仪和', position: palace.position,
+        params: { heaven: heavenly.find(s => ['戊', '甲'].includes(s)), earth: earthly.find(s => ['癸', '己'].includes(s)) },
+        description: '仪和：天盘戊+地盘癸 / 天盘甲+地盘己'
+      });
     }
   }
 
@@ -388,108 +524,123 @@ export const detectPatterns = (
     const gateEle = GATE_FIVE_ELEMENTS[palace.gate as Gate];
     const palaceEle = palace.fiveElements;
     if (GENERATE[gateEle] === palaceEle) {
-      auspicious.push({ name: '门宫和义', type: '门宫和义', position: palace.position, description: `和：门生宫 (${palace.gate}生${palace.position}宫)` });
+      auspicious.push({
+        id: 'patterns.common.men_gong_sheng',
+        name: '门宫和义', type: '门宫和义', position: palace.position,
+        params: { gate: palace.gate, palace: palace.position },
+        description: `和：门生宫 (${palace.gate}生${palace.position}宫)`
+      });
     }
     if (GENERATE[palaceEle] === gateEle) {
-      auspicious.push({ name: '门宫和义', type: '门宫和义', position: palace.position, description: `义：宫生门 (${palace.position}宫生${palace.gate})` });
+      auspicious.push({
+        id: 'patterns.common.men_gong_sheng_wo',
+        name: '门宫和义', type: '门宫和义', position: palace.position,
+        params: { gate: palace.gate, palace: palace.position },
+        description: `义：宫生门 (${palace.position}宫生${palace.gate})`
+      });
     }
   }
 
   // 三奇贵人升殿
   if (earthly.includes('乙') && palace.position === 3) {
-    auspicious.push({ name: '三奇贵人升殿', type: '三奇贵人升殿', position: palace.position, description: '地盘乙奇在震三宫，为贵人升殿' });
+    auspicious.push({ id: 'patterns.common.san_qi_sheng_dian', name: '三奇贵人升殿', type: '三奇贵人升殿', position: palace.position, params: { earth: '乙', palace: '震三宫' }, description: '地盘乙奇在震三宫，为贵人升殿' });
   }
   if (earthly.includes('丙') && palace.position === 9) {
-    auspicious.push({ name: '三奇贵人升殿', type: '三奇贵人升殿', position: palace.position, description: '地盘丙奇在离九宫，为贵人升殿' });
+    auspicious.push({ id: 'patterns.common.san_qi_sheng_dian', name: '三奇贵人升殿', type: '三奇贵人升殿', position: palace.position, params: { earth: '丙', palace: '离九宫' }, description: '地盘丙奇在离九宫，为贵人升殿' });
   }
   if (earthly.includes('丁') && palace.position === 7) {
-    auspicious.push({ name: '三奇贵人升殿', type: '三奇贵人升殿', position: palace.position, description: '地盘丁奇在兑七宫，为贵人升殿' });
+    auspicious.push({ id: 'patterns.common.san_qi_sheng_dian', name: '三奇贵人升殿', type: '三奇贵人升殿', position: palace.position, params: { earth: '丁', palace: '兑七宫' }, description: '地盘丁奇在兑七宫，为贵人升殿' });
   }
 
   // 三奇得使 / 玉女守门
   if (palace.gate !== '无门' && palace.gate === zhiShiGate && heavenly.some((h) => ['乙', '丙', '丁'].includes(h))) {
-    auspicious.push({ name: '三奇得使', type: '三奇得使', position: palace.position, description: '三奇落值使门，事有贵助' });
+    auspicious.push({ id: 'patterns.common.san_qi_de_shi', name: '三奇得使', type: '三奇得使', position: palace.position, description: '三奇落值使门，事有贵助' });
   }
   if (palace.gate === zhiShiGate && earthly.includes('丁')) {
-    auspicious.push({ name: '玉女守门', type: '玉女守门', position: palace.position, description: '地盘丁落值使门，主贵人' });
+    auspicious.push({ id: 'patterns.common.yu_nu_shou_men', name: '玉女守门', type: '玉女守门', position: palace.position, params: { earth: '丁' }, description: '地盘丁落值使门，主贵人' });
   }
 
   // 青龙返首 / 飞鸟跌穴
   if (heavenly.includes('戊') && earthly.includes('丙')) {
-    auspicious.push({ name: '青龙返首', type: '青龙返首', position: palace.position, description: '天盘戊配地盘丙' });
+    auspicious.push({ id: 'patterns.common.qing_long_fan_shou', name: '青龙返首', type: '青龙返首', position: palace.position, params: { heaven: '戊', earth: '丙' }, description: '天盘戊配地盘丙' });
   }
   if (heavenly.includes('丙') && earthly.includes('戊')) {
-    auspicious.push({ name: '飞鸟跌穴', type: '飞鸟跌穴', position: palace.position, description: '天盘丙配地盘戊' });
+    auspicious.push({ id: 'patterns.common.fei_niao_die_xue', name: '飞鸟跌穴', type: '飞鸟跌穴', position: palace.position, params: { heaven: '丙', earth: '戊' }, description: '天盘丙配地盘戊' });
   }
 
   // 奇格类（天盘庚克地盘乙/丙/丁）
   if (heavenly.includes('庚') && earthly.some((e) => ['乙', '丙', '丁'].includes(e))) {
-    inauspicious.push({ name: '奇格', type: '奇格', position: palace.position, description: '天盘庚克地盘乙/丙/丁' });
+    inauspicious.push({
+      id: 'patterns.bad.qi_ge',
+      name: '奇格', type: '奇格', position: palace.position,
+      params: { heaven: '庚', earth: earthly.find(e => ['乙', '丙', '丁'].includes(e)) },
+      description: '天盘庚克地盘乙/丙/丁'
+    });
   }
 
   // 青龙逃走 / 白虎猖狂 / 荧入太白 等基础克格
-  if (heavenly.includes('乙') && earthly.includes('辛')) inauspicious.push({ name: '青龙逃走', type: '青龙逃走', position: palace.position, description: '天盘乙被地盘辛克' });
-  if (heavenly.includes('辛') && earthly.includes('乙')) inauspicious.push({ name: '白虎猖狂', type: '白虎猖狂', position: palace.position, description: '天盘辛克地盘乙' });
-  if (heavenly.includes('丙') && earthly.includes('庚')) inauspicious.push({ name: '荧入太白', type: '荧入太白', position: palace.position, description: '天盘丙克地盘庚' });
-  if (heavenly.includes('庚') && earthly.includes('丙')) inauspicious.push({ name: '太白入荧', type: '太白入荧', position: palace.position, description: '天盘庚克地盘丙' });
+  if (heavenly.includes('乙') && earthly.includes('辛')) inauspicious.push({ id: 'patterns.bad.qing_long_tao_zou', name: '青龙逃走', type: '青龙逃走', position: palace.position, params: { heaven: '乙', earth: '辛' }, description: '天盘乙被地盘辛克' });
+  if (heavenly.includes('辛') && earthly.includes('乙')) inauspicious.push({ id: 'patterns.bad.bai_hu_chang_kuang', name: '白虎猖狂', type: '白虎猖狂', position: palace.position, params: { heaven: '辛', earth: '乙' }, description: '天盘辛克地盘乙' });
+  if (heavenly.includes('丙') && earthly.includes('庚')) inauspicious.push({ id: 'patterns.bad.ying_ru_tai_bai', name: '荧入太白', type: '荧入太白', position: palace.position, params: { heaven: '丙', earth: '庚' }, description: '天盘丙克地盘庚' });
+  if (heavenly.includes('庚') && earthly.includes('丙')) inauspicious.push({ id: 'patterns.bad.tai_bai_ru_ying', name: '太白入荧', type: '太白入荧', position: palace.position, params: { heaven: '庚', earth: '丙' }, description: '天盘庚克地盘丙' });
 
   // 朱雀投江：天盘丁+地盘癸
-  if (heavenly.includes('丁') && earthly.includes('癸')) inauspicious.push({ name: '朱雀投江', type: '朱雀投江', position: palace.position, description: '天盘丁+地盘癸' });
+  if (heavenly.includes('丁') && earthly.includes('癸')) inauspicious.push({ id: 'patterns.bad.zhu_que_tou_jiang', name: '朱雀投江', type: '朱雀投江', position: palace.position, params: { heaven: '丁', earth: '癸' }, description: '天盘丁+地盘癸' });
   // 螣蛇夭矫：天盘癸+地盘丁
-  if (heavenly.includes('癸') && earthly.includes('丁')) inauspicious.push({ name: '螣蛇夭矫', type: '螣蛇夭矫', position: palace.position, description: '天盘癸+地盘丁' });
+  if (heavenly.includes('癸') && earthly.includes('丁')) inauspicious.push({ id: 'patterns.bad.teng_she_yao_jiao', name: '螣蛇夭矫', type: '螣蛇夭矫', position: palace.position, params: { heaven: '癸', earth: '丁' }, description: '天盘癸+地盘丁' });
   // 大格：天盘庚+地盘癸
-  if (heavenly.includes('庚') && earthly.includes('癸')) inauspicious.push({ name: '大格', type: '大格', position: palace.position, description: '天盘庚+地盘癸' });
+  if (heavenly.includes('庚') && earthly.includes('癸')) inauspicious.push({ id: 'patterns.bad.da_ge', name: '大格', type: '大格', position: palace.position, params: { heaven: '庚', earth: '癸' }, description: '天盘庚+地盘癸' });
   // 小格：天盘庚+地盘壬
-  if (heavenly.includes('庚') && earthly.includes('壬')) inauspicious.push({ name: '小格', type: '小格', position: palace.position, description: '天盘庚+地盘壬' });
+  if (heavenly.includes('庚') && earthly.includes('壬')) inauspicious.push({ id: 'patterns.bad.xiao_ge', name: '小格', type: '小格', position: palace.position, params: { heaven: '庚', earth: '壬' }, description: '天盘庚+地盘壬' });
   // 刑格：天盘庚+地盘己
-  if (heavenly.includes('庚') && earthly.includes('己')) inauspicious.push({ name: '刑格', type: '刑格', position: palace.position, description: '天盘庚+地盘己' });
+  if (heavenly.includes('庚') && earthly.includes('己')) inauspicious.push({ id: 'patterns.bad.xing_ge', name: '刑格', type: '刑格', position: palace.position, params: { heaven: '庚', earth: '己' }, description: '天盘庚+地盘己' });
   // 伏宫格：天盘庚+地盘戊
-  if (heavenly.includes('庚') && earthly.includes('戊')) inauspicious.push({ name: '伏宫格', type: '伏宫格', position: palace.position, description: '天盘庚+地盘戊' });
+  if (heavenly.includes('庚') && earthly.includes('戊')) inauspicious.push({ id: 'patterns.bad.fu_gong_ge', name: '伏宫格', type: '伏宫格', position: palace.position, params: { heaven: '庚', earth: '戊' }, description: '天盘庚+地盘戊' });
   // 飞宫格：天盘戊+地盘庚
-  if (heavenly.includes('戊') && earthly.includes('庚')) inauspicious.push({ name: '飞宫格', type: '飞宫格', position: palace.position, description: '天盘戊+地盘庚' });
+  if (heavenly.includes('戊') && earthly.includes('庚')) inauspicious.push({ id: 'patterns.bad.fei_gong_ge', name: '飞宫格', type: '飞宫格', position: palace.position, params: { heaven: '戊', earth: '庚' }, description: '天盘戊+地盘庚' });
   // 岁格：天盘庚+地盘年干
-  if (heavenly.includes('庚') && earthly.includes(year.stem)) inauspicious.push({ name: '岁格', type: '岁格', position: palace.position, description: '天盘庚+地盘年干' });
+  if (heavenly.includes('庚') && earthly.includes(year.stem)) inauspicious.push({ id: 'patterns.bad.sui_ge', name: '岁格', type: '岁格', position: palace.position, params: { heaven: '庚', earth: year.stem }, description: '天盘庚+地盘年干' });
   // 月格：天盘庚+地盘月干
-  if (heavenly.includes('庚') && earthly.includes(month.stem)) inauspicious.push({ name: '月格', type: '月格', position: palace.position, description: '天盘庚+地盘月干' });
+  if (heavenly.includes('庚') && earthly.includes(month.stem)) inauspicious.push({ id: 'patterns.bad.yue_ge', name: '月格', type: '月格', position: palace.position, params: { heaven: '庚', earth: month.stem }, description: '天盘庚+地盘月干' });
   // 日格：天盘庚+地盘日干
   if (heavenly.includes('庚') && earthly.includes(day.stem)) {
-    inauspicious.push({ name: '日格', type: '日格', position: palace.position, description: '天盘庚+地盘日干' });
-    inauspicious.push({ name: '伏干格', type: '伏干格', position: palace.position, description: '天盘庚+地盘日干 (伏干格)' });
+    inauspicious.push({ id: 'patterns.bad.ri_ge', name: '日格', type: '日格', position: palace.position, params: { heaven: '庚', earth: day.stem }, description: '天盘庚+地盘日干' });
+    inauspicious.push({ id: 'patterns.bad.fu_gan_ge', name: '伏干格', type: '伏干格', position: palace.position, params: { heaven: '庚', earth: day.stem }, description: '天盘庚+地盘日干 (伏干格)' });
   }
 
   // 三奇入墓
   if ((heavenly.includes('乙') && (palace.position === 6 || palace.position === 2)) ||
-      (heavenly.includes('丙') && palace.position === 6) ||
-      (heavenly.includes('丁') && palace.position === 8)) {
-    inauspicious.push({ name: '三奇入墓', type: '三奇入墓', position: palace.position, description: '三奇入墓' });
+    (heavenly.includes('丙') && palace.position === 6) ||
+    (heavenly.includes('丁') && palace.position === 8)) {
+    inauspicious.push({ id: 'patterns.bad.san_qi_ru_mu', name: '三奇入墓', type: '三奇入墓', position: palace.position, description: '三奇入墓' });
   }
 
   // 三奇受刑
   if ((heavenly.includes('丙') && (palace.position === 1 || earthly.includes('壬') || earthly.includes('癸'))) ||
-      (heavenly.includes('丁') && (palace.position === 1 || earthly.includes('壬') || earthly.includes('癸'))) ||
-      (heavenly.includes('乙') && (palace.position === 6 || palace.position === 7 || earthly.includes('庚') || earthly.includes('辛')))) {
-    inauspicious.push({ name: '三奇受刑', type: '三奇受刑', position: palace.position, description: '三奇受刑' });
+    (heavenly.includes('丁') && (palace.position === 1 || earthly.includes('壬') || earthly.includes('癸'))) ||
+    (heavenly.includes('乙') && (palace.position === 6 || palace.position === 7 || earthly.includes('庚') || earthly.includes('辛')))) {
+    inauspicious.push({ id: 'patterns.bad.san_qi_shou_xing', name: '三奇受刑', type: '三奇受刑', position: palace.position, description: '三奇受刑' });
   }
 
   // 天网四张：天盘癸+地盘癸
-  if (heavenly.includes('癸') && earthly.includes('癸')) inauspicious.push({ name: '天网四张', type: '天网四张', position: palace.position, description: '天盘癸+地盘癸' });
+  if (heavenly.includes('癸') && earthly.includes('癸')) inauspicious.push({ id: 'patterns.bad.tian_wang_si_zhang', name: '天网四张', type: '天网四张', position: palace.position, params: { heaven: '癸', earth: '癸' }, description: '天盘癸+地盘癸' });
 
   // 悖格: 天盘丙+值符 or 地盘丙+值符
-  if (heavenly.includes('丙') && palace.isZhiFu) inauspicious.push({ name: '悖格', type: '悖格', position: palace.position, description: '天盘丙加值符' });
-  if (earthly.includes('丙') && palace.isZhiFu) inauspicious.push({ name: '悖格', type: '悖格', position: palace.position, description: '地盘丙加值符' });
+  if (heavenly.includes('丙') && palace.isZhiFu) inauspicious.push({ id: 'patterns.bad.bei_ge', name: '悖格', type: '悖格', position: palace.position, params: { position: '天盘', heaven: '丙' }, description: '天盘丙加值符' });
+  if (earthly.includes('丙') && palace.isZhiFu) inauspicious.push({ id: 'patterns.bad.bei_ge', name: '悖格', type: '悖格', position: palace.position, params: { position: '地盘', heaven: '丙' }, description: '地盘丙加值符' });
 
   // 时干/日干与宫天干克合的简单提示（小格、大格等简化）
   if (heavenly.includes('庚') && earthly.includes(timeStem)) {
-    inauspicious.push({ name: '时格', type: '时格', position: palace.position, description: '天盘庚逢时干' });
+    inauspicious.push({ id: 'patterns.bad.shi_ge', name: '时格', type: '时格', position: palace.position, params: { heaven: '庚' }, description: '天盘庚逢时干' });
   }
   if (heavenly.includes(dayStem) && earthly.includes('庚')) {
-    inauspicious.push({ name: '飞干格', type: '飞干格', position: palace.position, description: '天盘日干加地盘庚' });
+    inauspicious.push({ id: 'patterns.bad.fei_gan_ge', name: '飞干格', type: '飞干格', position: palace.position, params: { earth: '庚' }, description: '天盘日干加地盘庚' });
   }
 
   // 时干入墓
   const timeStemTombBranches = TOMB_MAP[timeStem];
   if (heavenly.includes(timeStem) && timeStemTombBranches && palace.earthBranch !== '无' && (Array.isArray(palace.earthBranch) ? palace.earthBranch : [palace.earthBranch]).some(b => timeStemTombBranches.includes(b))) {
-    inauspicious.push({ name: '时干入墓', type: '时干入墓', position: palace.position, description: '时干入墓' });
+    inauspicious.push({ id: 'patterns.bad.shi_gan_ru_mu', name: '时干入墓', type: '时干入墓', position: palace.position, description: '时干入墓' });
   }
 
   return { auspicious, inauspicious };
@@ -513,7 +664,13 @@ export const detectGlobalPatterns = (fourPillars: FourPillars): { auspicious: Au
   if (['戊', '癸'].includes(dayStem) && timeGZ === '甲寅') isTianXian = true;
 
   if (isTianXian) {
-    auspicious.push({ name: '天显时格', type: '天显时格', position: 0 as any, description: '天显时格：大吉之格，宜行事' });
+    auspicious.push({
+      id: 'patterns.common.tian_xian_shi_ge',
+      name: '天显时格',
+      type: '天显时格',
+      position: 0 as any,
+      description: '天显时格：大吉之格，宜行事'
+    });
   }
 
   // 五不遇时
@@ -530,18 +687,38 @@ export const detectGlobalPatterns = (fourPillars: FourPillars): { auspicious: Au
   if (dayStem === '癸' && timeGZ === '己未') isWuBuYuShi = true;
 
   if (isWuBuYuShi) {
-    inauspicious.push({ name: '五不遇时', type: '五不遇时', position: 0 as any, description: '五不遇时：时干克日干，百事不利' });
+    inauspicious.push({
+      id: 'patterns.bad.wu_bu_yu_shi',
+      name: '五不遇时',
+      type: '五不遇时',
+      position: 0 as any,
+      description: '五不遇时：时干克日干，百事不利'
+    });
   }
 
   return { auspicious, inauspicious };
 };
 
 export const calcMenPo = (palace: Palace, gatePressure: GatePressure | '无') => {
-  if (gatePressure !== '迫') return undefined;
+  if (gatePressure !== '迫' && gatePressure !== '制') return undefined;
+  const isPo = gatePressure === '迫';
+  const gate = palace.gate as Gate;
+  const palaceEle = palace.fiveElements;
+  const gateEle = GATE_FIVE_ELEMENTS[gate];
+
   return {
     position: palace.position,
-    gate: palace.gate as Gate,
+    gate: gate,
     gatePressure,
-    description: `${palace.gate}${gatePressure}${palace.fiveElements}`,
+    id: isPo ? 'patterns.bad.men_po' : 'patterns.bad.men_zhi',
+    params: {
+      gate,
+      palace: palace.position,
+      gateElement: gateEle,
+      palaceElement: palaceEle
+    },
+    description: isPo
+      ? `${gate}迫${palace.position}宫 (${gateEle}克${palaceEle})`
+      : `${gate}受制于${palace.position}宫 (${palaceEle}克${gateEle})`,
   };
 };

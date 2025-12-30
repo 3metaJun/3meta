@@ -30,6 +30,27 @@
     - 星门旺衰
     - 常用吉凶格局判断
     - 暗干信息
+    - 多语言支持 (zh-CN, zh-TW, en-US)
+
+## 命令行工具 (CLI)
+
+`3meta` 提供了一个方便的命令行工具 `qimen`，支持生成 JSON 格式的排盘数据，并支持多语言输出。
+
+```bash
+# 全局安装 (如果已发布到 npm)
+npm install -g 3meta
+qimen --date 2023-12-01T12:00:00 --lang zh-CN
+
+# 或者在项目中使用
+npm run build
+node bin/qimen.js --date 2023-12-01T12:00:00 --lang en-US
+```
+
+支持参数：
+- `--date`: 日期时间 (ISO)
+- `--lang`: 语言 (zh-CN, zh-TW, en-US)
+- `--solarTerm`: 指定节气
+- 以及更多 (查看 `node bin/qimen.js --help`)
 
 ## 快捷跳转
 
