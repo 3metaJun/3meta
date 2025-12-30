@@ -12,7 +12,9 @@
 
   [![NPM Version](https://img.shields.io/npm/v/3meta)](https://www.npmjs.com/package/3meta)
   [![License](https://img.shields.io/github/license/3metaJun/3meta)](https://github.com/3metaJun/3meta)
-
+  [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2F3metaJun%2F3meta.svg?type=shield&issueType=license)](https://app.fossa.com/projects/git%2Bgithub.com%2F3metaJun%2F3meta?ref=badge_shield&issueType=license)
+  [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2F3metaJun%2F3meta.svg?type=shield&issueType=security)](https://app.fossa.com/projects/git%2Bgithub.com%2F3metaJun%2F3meta?ref=badge_shield&issueType=security)
+  
 </div>
 
 ## Introduction
