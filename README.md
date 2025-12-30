@@ -37,11 +37,6 @@
 `3meta` 提供了一个方便的命令行工具 `qimen`，支持生成 JSON 格式的排盘数据，并支持多语言输出。
 
 ```bash
-# 全局安装 (如果已发布到 npm)
-npm install -g 3meta
-qimen --date 2023-12-01T12:00:00 --lang zh-CN
-
-# 或者在项目中使用
 npm run build
 node bin/qimen.js --date 2023-12-01T12:00:00 --lang en-US
 ```
@@ -70,13 +65,18 @@ node bin/qimen.js --date 2023-12-01T12:00:00 --lang en-US
 
 ## 在项目中使用
 
-从网络安装
+从 npm 安装（推荐）
+```bash
+npm install 3meta
 ```
+
+从 GitHub 安装
+```bash
 npm install git+https://github.com/3metaJun/3meta.git
 ```
 
 或者本地安装
-```
+```bash
 npm install /path/to/3meta
 ```
 
@@ -90,8 +90,17 @@ npm install /path/to/3meta
 ```html
 <script src="3meta.min.js"></script>
 <script>
+    // 切换为英文
+    ThreeMeta.i18n.setLocale('en-US');
+    
     const chart = ThreeMeta.QimenChart.byDatetime('2023-12-01 12:00:00');
-    console.log(chart);
+    
+    // 使用格式化工具输出格局描述
+    chart.palaces.forEach(p => {
+        p.auspiciousPatterns.forEach(pat => {
+            console.log(ThreeMeta.formatPattern(pat));
+        });
+    });
 </script>
 </html>
 ```
@@ -115,6 +124,28 @@ const customChart = QimenChart.byDatetime('2023-12-01 12:00:00', {
 });
 
 console.log(chart);
+
+## 多语言支持 (i18n)
+
+你可以通过 `i18n` 对象轻松切换语言并格式化输出：
+
+```typescript
+import { QimenChart, i18n, formatPattern } from '3meta';
+
+// 设置为英文
+i18n.setLocale('en-US');
+
+const chart = QimenChart.byDatetime('2023-12-01 12:00:00');
+
+// 格式化格局描述
+chart.palaces.forEach(p => {
+  p.auspiciousPatterns.forEach(pat => {
+    console.log(formatPattern(pat)); // 输出英文描述
+  });
+});
+
+// 手动翻译特定术语
+console.log(i18n.t('stems.甲')); // "Jia"
 ```
 
 ## 总结

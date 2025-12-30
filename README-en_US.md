@@ -36,11 +36,6 @@ An open-source library for generating Qimen Dunjia charts, featuring the followi
 `3meta` provides a convenient CLI tool `qimen` that supports generating chart data in JSON format with multi-language support.
 
 ```bash
-# Global installation (if published to npm)
-npm install -g 3meta
-qimen --date 2023-12-01T12:00:00 --lang en-US
-
-# Or use within the project
 npm run build
 node bin/qimen.js --date 2023-12-01T12:00:00 --lang en-US
 ```
@@ -70,9 +65,14 @@ If you want to view the `3meta` chart layout results with zero development effor
 
 ## Using in Projects
 
-Installing from the Web
-
+Installing from npm (Recommended)
+```bash
+npm install 3meta
 ```
+
+Installing from Github
+
+```bash
 npm install git+https://github.com/3metaJun/3meta.git
 ```
 
@@ -93,8 +93,17 @@ usage example:
 ```html
 <script src="3meta.min.js"></script>
 <script>
+    // Switch to English
+    ThreeMeta.i18n.setLocale('en-US');
+
     const chart = ThreeMeta.QimenChart.byDatetime('2023-12-01 12:00:00');
-    console.log(chart);
+
+    // Use formatters to output pattern descriptions
+    chart.palaces.forEach(p => {
+        p.auspiciousPatterns.forEach(pat => {
+            console.log(ThreeMeta.formatPattern(pat));
+        });
+    });
 </script>
 </html>
 ```
@@ -118,6 +127,28 @@ const customChart = QimenChart.byDatetime('2023-12-01 12:00:00', {
 });
 
 console.log(chart);
+
+## Multi-language Support (i18n)
+
+You can easily switch languages and format output using the `i18n` object:
+
+```typescript
+import { QimenChart, i18n, formatPattern } from '3meta';
+
+// Set language to English
+i18n.setLocale('en-US');
+
+const chart = QimenChart.byDatetime('2023-12-01 12:00:00');
+
+// Format pattern descriptions
+chart.palaces.forEach(p => {
+  p.auspiciousPatterns.forEach(pat => {
+    console.log(formatPattern(pat)); // Outputs English descriptions
+  });
+});
+
+// Translate specific terms manually
+console.log(i18n.t('stems.甲')); // "Jia"
 ```
 
 ## Summary

@@ -1,6 +1,6 @@
 {
   "name": "3meta",
-  "version": "2.0.0",
+  "version": "2.5.0",
   "description": "奇门遁甲排盘 TypeScript 库",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -10,13 +10,37 @@
     "qimen": "bin/qimen.js",
     "get24JieQiByYear": "bin/get24JieQiByYear.js"
   },
+  "files": [
+    "dist",
+    "lib",
+    "README.md",
+    "README-en_US.md",
+    "README-zh_TW.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/3metaJun/3meta.git"
+  },
+  "keywords": [
+    "奇门遁甲",
+    "奇門遁甲",
+    "qimen",
+    "divination",
+    "astrology",
+    "metaphysics",
+    "javascript",
+    "typescript"
+  ],
+  "license": "MIT",
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "build:browser": "rollup -c",
     "build:all": "npm run build && npm run build:browser",
     "test": "jest --config jestconfig.json",
     "lint": "echo 'lint not configured'",
-    "prepare": "npm run build"
+    "prepare": "npm run build:all"
   },
   "author": "3metaJun",
   "devDependencies": {

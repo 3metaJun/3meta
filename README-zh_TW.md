@@ -36,11 +36,6 @@
 `3meta` 提供了一個方便的命令列工具 `qimen`，支援生成 JSON 格式的排盤資料，並支援多語言輸出。
 
 ```bash
-# 全域安裝 (如果已發佈到 npm)
-npm install -g 3meta
-qimen --date 2023-12-01T12:00:00 --lang zh-TW
-
-# 或者在專案中使用
 npm run build
 node bin/qimen.js --date 2023-12-01T12:00:00 --lang zh-TW
 ```
@@ -70,15 +65,20 @@ node bin/qimen.js --date 2023-12-01T12:00:00 --lang zh-TW
 
 ## 於專案中使用
 
-從網路安裝
-
+從 npm 安裝（推薦）
+```bash
+npm install 3meta
 ```
+
+從 GitHub 安裝
+
+```bash
 npm install git+https://github.com/3metaJun/3meta.git
 ```
 
 或於本機安裝
 
-```
+```bash
 npm install /path/to/3meta
 ```
 
@@ -93,8 +93,17 @@ npm install /path/to/3meta
 ```html
 <script src="3meta.min.js"></script>
 <script>
+    // 切換為繁體中文
+    ThreeMeta.i18n.setLocale('zh-TW');
+
     const chart = ThreeMeta.QimenChart.byDatetime('2023-12-01 12:00:00');
-    console.log(chart);
+
+    // 使用格式化工具輸出格局描述
+    chart.palaces.forEach(p => {
+        p.auspiciousPatterns.forEach(pat => {
+            console.log(ThreeMeta.formatPattern(pat));
+        });
+    });
 </script>
 </html>
 ```
@@ -118,6 +127,28 @@ const customChart = QimenChart.byDatetime('2023-12-01 12:00:00', {
 });
 
 console.log(chart);
+
+## 多語言支援 (i18n)
+
+你可以透過 `i18n` 物件輕鬆切換語言並格式化輸出：
+
+```typescript
+import { QimenChart, i18n, formatPattern } from '3meta';
+
+// 設置為繁體中文
+i18n.setLocale('zh-TW');
+
+const chart = QimenChart.byDatetime('2023-12-01 12:00:00');
+
+// 格式化格局描述
+chart.palaces.forEach(p => {
+  p.auspiciousPatterns.forEach(pat => {
+    console.log(formatPattern(pat)); // 輸出繁體中文描述
+  });
+});
+
+// 手動翻譯特定術語
+console.log(i18n.t('stems.甲')); // "甲"
 ```
 
 ## 總結
