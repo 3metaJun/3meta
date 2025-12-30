@@ -167,4 +167,12 @@ Using the data returned by this program, you can generate a complete Qimen Dunji
 
 ![image](https://github.com/3metaJun/3meta/blob/main/static/charts-2025-12-25T16-34-35.png)
 
+## 版权
+
+[MIT License](https://github.com/3metaJun/3meta/blob/main/LICENSE)
+
+Copyright © 2025 All Contributors
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2F3metaJun%2F3meta.svg?type=large&issueType=license)](https://app.fossa.com/projects/git%2Bgithub.com%2F3metaJun%2F3meta?ref=badge_large&issueType=license)
+
 > \[!NOTE\] Please use this open-source code responsibly and strictly prohibit its use for any illegal purposes.
