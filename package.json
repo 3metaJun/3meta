@@ -1,6 +1,6 @@
 {
   "name": "3meta",
-  "version": "2.5.0",
+  "version": "2.5.1",
   "description": "奇门遁甲排盘 TypeScript 库",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
