@@ -70,6 +70,7 @@ If you want to view the `3meta` chart layout results with zero development effor
 *   Support copying in AI format
 *   Save the chart as a Markdown note
 *   Support keyboard shortcuts
+*   Support DeepSeek V3、DeepSeek R1、Gemini Fast、Gemini Pro Model
 *   And more
 
 ## Using in Projects

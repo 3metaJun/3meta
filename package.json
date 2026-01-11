@@ -43,6 +43,7 @@
     "prepare": "npm run build:all"
   },
   "author": "3metaJun",
+  "homepage": "https://docs.3meta.pub",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^29.0.0",
     "@rollup/plugin-node-resolve": "^15.0.0",

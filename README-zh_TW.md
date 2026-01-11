@@ -70,6 +70,7 @@ node bin/qimen.js --date 2023-12-01T12:00:00 --lang zh-TW
 *   支援複製為 AI 格式
 *   可將盤面儲存為 Markdown 筆記
 *   支援快捷鍵操作
+*   支援 DeepSeek V3、DeepSeek R1、Gemini Fast、Gemini Pro 模型
 *   以及其他更多功能
 
 ## 於專案中使用
